@@ -1,4 +1,27 @@
-<div>
-  <h1 class="font-bold text-4xl">Articles#index</h1>
-  <p>Find me in app/views/articles/index.html.erb</p>
+<div class="container mx-auto my-8">
+  <h1 class="text-3xl font-bold mb-6">Articles</h1>
+  <%= link_to 'New Article', new_article_path, class: 'bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700' %>
+
+  <table class="table-auto w-full mt-6 border-collapse border border-gray-300 rounded-lg">
+    <thead>
+      <tr class="bg-gray-200 text-left">
+        <th class="border border-gray-300 p-2">Title</th>
+        <th class="border border-gray-300 p-2">Status</th>
+        <th class="border border-gray-300 p-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @articles.each do |article| %>
+        <tr class="hover:bg-gray-100">
+          <td class="border border-gray-300 p-2"><%= article.title %></td>
+          <td class="border border-gray-300 p-2"><%= article.status.capitalize %></td>
+          <td class="border border-gray-300 p-2 space-x-2">
+            <%= link_to 'Show', article_path(article), class: 'bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-700' %>
+            <%= link_to 'Edit', edit_article_path(article), class: 'bg-yellow-500 text-white py-1 px-3 rounded-lg hover:bg-yellow-700' %>
+            <%= link_to 'Delete', article_path(article), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-700' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
