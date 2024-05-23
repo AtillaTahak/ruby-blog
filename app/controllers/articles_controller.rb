@@ -17,10 +17,10 @@ class ArticlesController < ApplicationController
 
 	def create
 	  @article = Article.new(article_params)
-
 	  unless @article.content.present?
 		@article.content = 'content will be here'
 	  end
+
 	  if @article.save
 		redirect_to @article, notice: 'Article was successfully created.'
 	  else
