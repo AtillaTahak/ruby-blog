@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
 	before_action :set_article, only: %i[show edit update destroy]
+	before_action :check_if_published, only: %i[edit update destroy]
 
 	def index
 	  @articles = Article.all
@@ -17,25 +18,18 @@ class ArticlesController < ApplicationController
 
 	def create
 	  @article = Article.new(article_params)
-	  unless @article.content.present?
-		@article.content = 'content will be here'
-	  end
-
 	  if @article.save
 		redirect_to @article, notice: 'Article was successfully created.'
 	  else
-		render :new, status: :unprocessable_entity
+		render :new
 	  end
 	end
 
 	def update
 	  if @article.update(article_params)
-		unless @article.content.present?
-			@article.content = 'content will be here'
-		end
 		redirect_to @article, notice: 'Article was successfully updated.'
 	  else
-		render :edit, status: :unprocessable_entity
+		render :edit
 	  end
 	end
 
@@ -47,10 +41,16 @@ class ArticlesController < ApplicationController
 	private
 
 	def set_article
-	  @article = Article.find(params[:id])
+	@article = Article.find(params[:id])
 	end
 
 	def article_params
-	  params.require(:article).permit(:title, :content, :status)
+	params.require(:article).permit(:title, :content, :published)
+	end
+
+	def check_if_published
+	return unless @article.published?
+
+	redirect_to @article, alert: 'You cannot edit or delete a published article.'
 	end
   end

@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
 	def index
-		@articles_exist = Article.exists?
+		@articles = Article.where(published: true).select(:id, :title)
 	end
 end
