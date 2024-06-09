@@ -1,0 +1,87 @@
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
+    <div class="mb-4">
+      <h1 class="text-3xl font-bold text-gray-800">Profile: <%= @user.nickname %></h1>
+      <p class="mt-2 text-md text-gray-600">Email: <%= @user.email %></p>
+    </div>
+
+    <% if user_signed_in? && @user == current_user %>
+      <div class="mb-4">
+        <%= link_to 'Edit Profile', edit_user_registration_path, class: "px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg" %>
+      </div>
+    <% end %>
+
+
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold mb-4">Articles</h2>
+      <% @articles.each do |article| %>
+        <div class="p-4 mb-4 bg-gray-100 rounded-md shadow-sm">
+          <h3 class="text-xl font-semibold"><%= link_to article.title, article_path(article) %></h3>
+          <p class="text-gray-600"><%= article.content.to_plain_text.truncate(100) %></p>
+          <%= render 'articles/tags', article: article %>
+          <div class="mt-2">
+            <span class="text-sm text-gray-600">
+              Published on <%= l(article.created_at, format: :short) %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="text-2xl font-semibold mb-4">Pending Comments on Your Articles</h2>
+      <% if @pending_comments.any? %>
+        <% @pending_comments.each do |comment| %>
+          <div class="p-4 mb-4 bg-yellow-100 rounded-md">
+            <div class="flex justify-between">
+              <p class="text-gray-800"><%= comment.content %></p>
+              <div class="ml-4">
+                <% if comment.article.user == current_user %>
+                  <%= link_to 'Approve', approve_article_comment_path(comment.article, comment), method: :patch, class: "px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded-md" %>
+                  <%= link_to 'Reject', reject_article_comment_path(comment.article, comment), method: :delete, data: { confirm: 'Are you sure to reject this comment?' }, class: "px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md" %>
+                <% end %>
+              </div>
+</div>
+            <div class="text-sm text-gray-600 mt-2">
+              On Article: <%= link_to comment.article.title, article_path(comment.article) %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-gray-600">No pending comments on your articles.</p>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="text-2xl font-semibold mb-4">Pending Comments (Created by You)</h2>
+      <% if @pending_self_comments.any? %>
+        <% @pending_self_comments.each do |comment| %>
+          <div class="p-4 mb-4 bg-yellow-200 rounded-md shadow-sm">
+            <p class="text-gray-800"><%= comment.content %></p>
+            <div class="text-sm text-gray-600 mt-2">
+              On Article: <%= link_to comment.article.title, article_path(comment.article) %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-gray-600">No pending comments created by you.</p>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="text-2xl font-semibold mb-4">Approved Comments</h2>
+      <% if @approved_comments.any? %>
+        <% @approved_comments.each do |comment| %>
+          <div class="p-4 mb-4 bg-green-100 rounded-md">
+            <p class="text-gray-800"><%= comment.content %></p>
+            <div class="text-sm text-gray-600 mt-2">
+              On Article: <%= link_to comment.article.title, article_path(comment.article) %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-gray-600">No approved comments.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

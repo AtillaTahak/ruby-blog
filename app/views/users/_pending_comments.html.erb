@@ -1,0 +1,13 @@
+<% if pending_comments.any? %>
+  <div class="mt-6">
+    <h2 class="text-xl font-semibold mb-4">Pending Comments</h2>
+    <% pending_comments.each do |comment| %>
+      <div class="rounded-md p-4 bg-yellow-100 mb-4">
+        <p class="mb-2"><%= comment.content %></p>
+        <div class="text-sm text-gray-500">
+          Comment on <%= link_to comment.article.title, article_path(comment.article) %> - <%= comment.created_at.strftime("%Y-%m-%d %H:%M") %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

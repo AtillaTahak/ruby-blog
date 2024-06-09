@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
 	before_action :set_article, only: %i[show edit update destroy]
 	before_action :check_if_published, only: %i[edit update destroy]
+	before_action :authenticate_user!, except: %i[index show]
 
 	def index
 	  @articles = Article.all
@@ -17,7 +18,7 @@ class ArticlesController < ApplicationController
 	end
 
 	def create
-	  @article = Article.new(article_params)
+	  @article = current_user.articles.build(article_params)
 	  if @article.save
 		redirect_to @article, notice: 'Article was successfully created.'
 	  else
@@ -41,16 +42,16 @@ class ArticlesController < ApplicationController
 	private
 
 	def set_article
-	@article = Article.find(params[:id])
+	  @article = Article.find(params[:id])
 	end
 
 	def article_params
-	params.require(:article).permit(:title, :content, :published)
+	  params.require(:article).permit(:title, :content, :published, :tags_list, tag_ids: [])
 	end
 
 	def check_if_published
-	return unless @article.published?
+	  return unless @article.published?
 
-	redirect_to @article, alert: 'You cannot edit or delete a published article.'
+	  redirect_to @article, alert: 'You cannot edit or delete a published article.'
 	end
   end

@@ -1,0 +1,10 @@
+<div class="bg-gray-100 p-4 rounded-md mb-4">
+  <p class="mb-2"><%= comment.content %></p>
+  <div class="text-sm text-gray-600">By <%= comment.user.nickname %></div>
+  <% if comment.user == current_user && !comment.approved %>
+    <div class="text-red-600">Pending Approval</div>
+  <% end %>
+  <% if comment.user == current_user && comment.rejected %>
+    <div class="text-red-600">Rejected Comment</div>
+  <% end %>
+</div>

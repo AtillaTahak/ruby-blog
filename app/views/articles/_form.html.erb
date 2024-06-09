@@ -20,9 +20,25 @@
     <%= form.rich_text_area :content, class: 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm' %>
   </div>
 
+  <div class="field">
+    <%= form.label :tags_list, "Tags (comma separated)", class: 'block text-sm font-medium text-gray-700' %>
+    <%= form.text_field :tags_list, value: @article.tags_list, class: 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tag_ids, "Select Existing Tags (Ctrl+Click to select multiple)", class: 'block text-sm font-medium text-gray-700' %>
+    <%= select_tag "article[tag_ids][]", options_from_collection_for_select(Tag.all, :id, :name, @article.tag_ids), multiple: true, class: 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500 sm:text-sm' %>
+  </div>
+  
+  <div>
+    <%= form.label :published, class: 'block text-sm font-medium text-gray-700' %>
+    <%= form.check_box :published, class: 'form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out' %>
+    <span class="ml-2 text-sm text-gray-600">Publish this article</span>
+  </div>
+
+
   <div>
     <%= form.submit class: 'bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700' %>
     <%= link_to 'Cancel', articles_path, class: 'ml-2 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-700' %>
   </div>
-
 <% end %>
