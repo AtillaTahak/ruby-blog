@@ -83,9 +83,6 @@ Rails.application.configure do
 
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
-
-  config.hosts << ENV.fetch("HOST") { "https://mysite-k9e5.onrender.com" }
-
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
