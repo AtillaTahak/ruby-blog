@@ -66,7 +66,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_09_150302) do
     t.text "content", default: "content will be here"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "vote_count"
     t.boolean "published", default: false
     t.bigint "user_id"
     t.index ["user_id"], name: "index_articles_on_user_id"
