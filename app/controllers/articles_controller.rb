@@ -1,5 +1,5 @@
 class ArticlesController < ApplicationController
-	before_action :set_article, only: %i[show edit update destroy]
+	before_action :set_article, only: %i[show edit update destroy, :like, :unlike]
 	before_action :check_if_published, only: %i[edit update destroy]
 	before_action :authenticate_user!, except: %i[index show]
 
@@ -37,6 +37,16 @@ class ArticlesController < ApplicationController
 	def destroy
 	  @article.destroy
 	  redirect_to articles_path, notice: 'Article was successfully deleted.'
+	end
+
+	def like
+		current_user.like(@article)
+		redirect_to @article, notice: 'You liked this article.'
+	  end
+
+	def unlike
+		current_user.unlike(@article)
+		redirect_to @article, notice: 'You unliked this article.'
 	end
 
 	private
